@@ -1,18 +1,24 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-echo "Pulling latest Docker image..."
-docker pull biwunor/student-tracker
+APP_NAME="student-tracker"
+IMAGE_NAME="biwunor/student-tracker"
+HOST_PORT=8011
+CONTAINER_PORT=8000
 
-echo "Stopping and removing any existing container..."
-docker stop student-tracker || true
-docker rm student-tracker || true
+echo "📦 Pulling latest Docker image: $IMAGE_NAME..."
+docker pull $IMAGE_NAME
 
-echo "Starting new container on port 8011..."
+echo "🛑 Stopping existing container (if running)..."
+docker stop $APP_NAME || true
+docker rm $APP_NAME || true
+
+echo "🚀 Starting new container on port $HOST_PORT..."
 docker run -d \
   --env-file .env \
-  -p 8011:8000 \
-  --name student-tracker \
-  biwunor/student-tracker
+  -p $HOST_PORT:$CONTAINER_PORT \
+  --name $APP_NAME \
+  $IMAGE_NAME
 
-echo "✅ App deployed at http://$(curl -s http://checkip.amazonaws.com):8011"
+PUBLIC_IP=$(curl -s http://checkip.amazonaws.com)
+echo "✅ App deployed at: http://$PUBLIC_IP:$HOST_PORT"

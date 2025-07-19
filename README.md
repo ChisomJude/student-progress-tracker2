@@ -1,3 +1,5 @@
+![CI/CD Workflow](https://github.com/bonaventuresimeon/student-progress-tracker2/actions/workflows/ci-cd.yml/badge.svg)
+
 # Student-Project-Tracker Web APP
 A simple FastAPI web application for registering students and tracking their weekly progress during the Cloud Native Series.
 

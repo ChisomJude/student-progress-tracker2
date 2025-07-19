@@ -33,7 +33,7 @@ jobs:
       - name: 🧹 Lint with flake8
         run: |
           pip install flake8
-          flake8 app --count --select=E9,F63,F7,F82 --show-source --statistics || true
+          flake8 app --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: 🧪 Run tests
         run: |
@@ -70,4 +70,4 @@ jobs:
             cd student-progress-tracker2
             git pull origin main
             chmod +x deploy.sh
-            ./deploy.sh
+            ./deploy.sh deploy
