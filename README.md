@@ -93,3 +93,9 @@ You can deploy the app on platforms like:
 This project is used for learning cloud-native tools and Handson-Project.
 
 Feel free to fork and extend it!
+
+# Student Progress Tracker
+
+![CI/CD](https://github.com/bonaventuresimeon/student-progress-tracker2/actions/workflows/ci-cd.yml/badge.svg)
+
+A FastAPI web app to register and track student progress.
