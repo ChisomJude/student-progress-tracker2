@@ -1,20 +1,25 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from app.crud import create_student, get_student_progress, update_student_progress, count_students, get_all_students
-<<<<<<< HEAD
-# added -  get_all_students (in line 4 above)
-=======
->>>>>>> 0b0e8c6 (Add AWS EC2 deploy workflow)
+
+from app.crud import (
+    create_student,
+    get_student_progress,
+    update_student_progress,
+    count_students,
+    get_all_students  # ✅ Admin operation added
+)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+# Home route
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     total = await count_students()
     return templates.TemplateResponse("index.html", {"request": request, "total": total})
 
+# Register routes
 @app.get("/register", response_class=HTMLResponse)
 async def register_form(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
@@ -24,6 +29,7 @@ async def register_submit(request: Request, name: str = Form(...)):
     student = await create_student(name)
     return templates.TemplateResponse("register.html", {"request": request, "message": f"Welcome, {student.name}!"})
 
+# Progress routes
 @app.get("/progress", response_class=HTMLResponse)
 async def progress_form(request: Request):
     return templates.TemplateResponse("progress.html", {"request": request})
@@ -32,12 +38,12 @@ async def progress_form(request: Request):
 async def progress_submit(request: Request, name: str = Form(...)):
     student = await get_student_progress(name)
     progress = []
-
-    if student and  "progress" in student:
-       for week, status in student["progress"].items():
-          progress.append({"week": week, "status": status})
+    if student and "progress" in student:
+        for week, status in student["progress"].items():
+            progress.append({"week": week, "status": status})
     return templates.TemplateResponse("progress.html", {"request": request, "progress": progress, "name": name})
 
+# Update route
 @app.get("/update", response_class=HTMLResponse)
 async def update_form(request: Request):
     return templates.TemplateResponse("update.html", {"request": request})
@@ -52,15 +58,8 @@ async def update_submit(
     await update_student_progress(name, week, status)
     return templates.TemplateResponse("update.html", {"request": request, "message": "Progress updated successfully!"})
 
-<<<<<<< HEAD
-# added Admin routes operations - Get all students
+# ✅ Admin route
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_panel(request: Request):
     students = await get_all_students()
     return templates.TemplateResponse("admin.html", {"request": request, "students": students})
-=======
-@app.get("/admin", response_class=HTMLResponse)
-async def admin_panel(request: Request):
-    students = await get_all_students()
-    return templates.TemplateResponse("admin.html", {"request": request, "students": students})
->>>>>>> 0b0e8c6 (Add AWS EC2 deploy workflow)

@@ -1,11 +1,15 @@
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from app.database import student_collection
 from app.models import Student
 from uuid import uuid4
-<<<<<<< HEAD
 from typing import List  # Added this for Version 2.0
-=======
-from typing import List
->>>>>>> 0b0e8c6 (Add AWS EC2 deploy workflow)
+
+router = APIRouter()
+templates = Jinja2Templates(directory="templates")
+
+# CRUD functions
 
 async def create_student(name: str):
     student_id = str(uuid4())
@@ -28,15 +32,16 @@ async def update_student_progress(name: str, week: str, status: str):
 async def count_students():
     return await student_collection.count_documents({})
 
-<<<<<<< HEAD
-# added Admin CRUD operations - Get all students
-=======
-
->>>>>>> 0b0e8c6 (Add AWS EC2 deploy workflow)
-
 async def get_all_students():
     students_cursor = student_collection.find({})
     students = []
     async for student in students_cursor:
         students.append(student)
     return students
+
+# Route to serve admin.html
+
+@router.get("/admin", response_class=HTMLResponse)
+async def show_admin_page(request: Request):
+    students = await get_all_students()
+    return templates.TemplateResponse("admin.html", {"request": request, "students": students})
