@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 name: CI/CD - Student Project Tracker
+=======
+name: Deploy to AWS EC2
+>>>>>>> 0b0e8c6 (Add AWS EC2 deploy workflow)
 
 on:
   push:
     branches: [ main ]
+<<<<<<< HEAD
   pull_request:
     branches: [ main ]
 
@@ -72,3 +77,64 @@ jobs:
             git pull origin main
             chmod +x deploy.sh
             ./deploy.sh
+=======
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2) Load the EC2 SSH private key from GitHub Secrets
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      # 3) SSH into EC2 and deploy the app
+      - name: Deploy to EC2
+        env:
+          EC2_HOST:        ${{ secrets.EC2_HOST }}
+          VAULT_ADDR:      ${{ secrets.VAULT_ADDR }}
+          VAULT_ROLE_ID:   ${{ secrets.VAULT_ROLE_ID }}
+          VAULT_SECRET_ID: ${{ secrets.VAULT_SECRET_ID }}
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
+            set -euo pipefail
+
+            # Ensure Docker is installed and running
+            if ! command -v docker >/dev/null 2>&1; then
+              echo "Docker not found – installing..."
+              curl -fsSL https://get.docker.com | sh
+            fi
+            sudo systemctl enable --now docker
+
+            # Remove old source and clone fresh copy
+            rm -rf ~/Progress-Tracker-App || true
+            git clone https://github.com/bonaventuresimeon/student-progress-tracker2.git ~/student-tracker
+            cd ~/student-tracker
+
+            # Build latest Docker image (with updated base)
+            sudo docker build --pull -t student-tracker:latest .
+
+            # Stop and remove existing container if any
+            sudo docker stop student-tracker 2>/dev/null || true
+            sudo docker rm student-tracker 2>/dev/null || true
+
+            # Run new container on port 8011 with Vault env variables and volume
+            sudo docker run -d --name student-tracker \
+              -p 8011:8011 \
+              -v \$HOME/app-data:/app/data \
+              -e VAULT_ADDR=$VAULT_ADDR \
+              -e VAULT_ROLE_ID=$VAULT_ROLE_ID \
+              -e VAULT_SECRET_ID=$VAULT_SECRET_ID \
+              student-tracker:latest
+
+            # Optional: save container logs to file in background
+            sudo docker logs -f student-tracker > \$HOME/app-data/app.log 2>&1 &
+          EOF
+
+>>>>>>> 0b0e8c6 (Add AWS EC2 deploy workflow)
