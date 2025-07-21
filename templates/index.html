@@ -1,13 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cloud Native Series - Student Tracker</title>
+  <title>Cloud Native Series - Student Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    p {
+      font-size: 1.3em;
+      margin: 20px 0;
+      color: #ffe;
+      text-shadow: 0 0 8px rgba(255,255,255,0.3);
+    }
+
+    button {
+      background: linear-gradient(145deg, #6a11cb, #2575fc);
+      border: none;
+      color: white;
+      padding: 14px 30px;
+      margin: 15px;
+      font-size: 1em;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.4);
+      background: linear-gradient(145deg, #ff416c, #ff4b2b);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 100px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      font-weight: 600;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the Cloud Native Series with Chisom!</h1>
-    <p>Total Registered Students: {{ total }}</p>
-    <button onclick="window.location.href='/register'">Register</button>
-    <button onclick="window.location.href='/progress'">Check Progress</button>
-    <button onclick="window.location.href='/update'">Update Progress</button>
+  <h1>Welcome to the Cloud Native Series with Chisom!</h1>
+  <p>Total Registered Students: {{ total }}</p>
+
+  <button onclick="window.location.href='/register'">Register</button>
+  <button onclick="window.location.href='/progress'">Check Progress</button>
+  <button onclick="window.location.href='/update'">Update Progress</button>
+  <button onclick="window.location.href='/admin'">Admin Panel</button> <!-- ✅ New Admin Button -->
+
+  <footer>
+    Designed with ❤️ by Bonaventure Simeon
+  </footer>
 </body>
 </html>
