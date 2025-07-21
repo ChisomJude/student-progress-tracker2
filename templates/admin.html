@@ -1,39 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Panel</title>
-    <style>
-        table { border-collapse: collapse; width: 80%; margin: auto; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background: #333; color: white; }
-    </style>
+  <title>Admin Panel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 40px;
+      background: linear-gradient(90deg, #ff9966, #ff5e62);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(4px);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    th, td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: left;
+    }
+
+    th {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: white;
+      font-size: 1.1em;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0,255,255,0.3);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    td strong {
+      color: #ffd700;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-weight: bold;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Admin Panel - Student Progress</h1>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Progress</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student in students %}
-            <tr>
-                <td>{{ student.name }}</td>
-                <td>
-                    {% if student.progress %}
-                        {% for week, status in student.progress.items() %}
-                            <strong>{{ week }}</strong>: {{ status }}<br>
-                        {% endfor %}
-                    {% else %}
-                        No progress recorded yet
-                    {% endif %}
-                </td>
-            </tr>
+  <h1>Admin Panel - Student Progress</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{ student.name }}</td>
+        <td>
+          {% if student.progress %}
+            {% for week, status in student.progress.items() %}
+              <strong>{{ week }}</strong>: {{ status }}<br>
             {% endfor %}
-        </tbody>
-    </table>
+          {% else %}
+            No progress recorded yet
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <footer>
+    Managed with ✨ by Bonaventure Simeon
+  </footer>
 </body>
 </html>
