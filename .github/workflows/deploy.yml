@@ -51,11 +51,10 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: 22
         script: |
-          script: |
-            sudo docker pull chisomjude/student-progress-tracker2:latest
-            sudo docker stop student-progress-tracker2 || true && sudo docker rm student-progress-tracker2 || true
-            sudo docker run -d -p 8080:8080 --name student-progress-tracker2 \
-              -e VAULT_ADDR="${{ secrets.VAULT_ADDR }}" \
-              -e VAULT_ROLE_ID="${{ secrets.VAULT_ROLE_ID }}" \
-              -e VAULT_SECRET_ID="${{ secrets.VAULT_SECRET_ID }}" \
-              chisomjude/student-progress-tracker2:latest
+          sudo docker pull chisomjude/student-progress-tracker2:latest
+          sudo docker stop student-progress-tracker2 || true && sudo docker rm student-progress-tracker2 || true
+          sudo docker run -d -p 8080:8080 --name student-progress-tracker2 \
+            -e VAULT_ADDR="${{ secrets.VAULT_ADDR }}" \
+            -e VAULT_ROLE_ID="${{ secrets.VAULT_ROLE_ID }}" \
+            -e VAULT_SECRET_ID="${{ secrets.VAULT_SECRET_ID }}" \
+            chisomjude/student-progress-tracker2:latest
