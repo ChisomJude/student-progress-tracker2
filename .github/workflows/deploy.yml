@@ -3,7 +3,7 @@ name: CI/CD - Docker Build & Deploy to EC2
 on:
   push:
     branches: [ master ]
-    
+
   workflow_dispatch:
 
 env:
@@ -51,9 +51,9 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: 22
         script: |
-          docker pull $IMAGE_NAME:latest
-          docker stop student-progress-tracker2 || true && docker rm student-progress-tracker2 || true
-          docker run -d -p 8080:8080 --name student-progress-tracker2 \
+          sudo docker pull $IMAGE_NAME:latest
+          sudo docker stop student-progress-tracker2 || true && docker rm student-progress-tracker2 || true
+          sudo docker run -d -p 8080:8080 --name student-progress-tracker2 \
             -e VAULT_ADDR="${{ secrets.VAULT_ADDR }}" \
             -e VAULT_ROLE_ID="${{ secrets.VAULT_ROLE_ID }}" \
             -e VAULT_SECRET_ID="${{ secrets.VAULT_SECRET_ID }}" \
