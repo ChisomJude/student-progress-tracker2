@@ -23,11 +23,20 @@ jobs:
 
     - name: Run container for test
       run: |
-        docker run -d -p 8080:8080 --name test_container $IMAGE_NAME:latest
-        sleep 5
+        docker run -d -p 8080:8080 \
+          --name test_container \
+          -e VAULT_ADDR="${{ secrets.VAULT_ADDR }}" \
+          -e VAULT_ROLE_ID="${{ secrets.VAULT_ROLE_ID }}" \
+          -e VAULT_SECRET_ID="${{ secrets.VAULT_SECRET_ID }}" \
+          $IMAGE_NAME:latest
+
+        for i in {1..10}; do
+          curl --fail http://localhost:8080/health && break || sleep 2
+        done
+
         docker logs test_container
-        curl --fail http://localhost:8080/health || (echo "Health check failed" && exit 1)
         docker stop test_container
+        docker rm test_container
 
     - name: Push image to Docker Hub
       run: docker push $IMAGE_NAME:latest
@@ -42,4 +51,8 @@ jobs:
         script: |
           docker pull $IMAGE_NAME:latest
           docker stop student-progress-tracker2 || true && docker rm student-progress-tracker2 || true
-          docker run -d --name student-progress-tracker2 -p 8080:8080 $IMAGE_NAME:latest
+          docker run -d -p 8080:8080 --name student-progress-tracker2 \
+            -e VAULT_ADDR="${{ secrets.VAULT_ADDR }}" \
+            -e VAULT_ROLE_ID="${{ secrets.VAULT_ROLE_ID }}" \
+            -e VAULT_SECRET_ID="${{ secrets.VAULT_SECRET_ID }}" \
+            $IMAGE_NAME:latest
