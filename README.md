@@ -88,8 +88,10 @@ You can deploy the app on platforms like:
 - Azure App Service
 - Elastic Beanstalk or more
 
+Here is a Sample deployment to EC2 Using Git Actions
+![alt text](image.png)
 
 ## 👩🏽‍💻 Built for the Cloud Native Series by Chisom
 This project is used for learning cloud-native tools and Handson-Project.
 
-Feel free to fork and extend it!
+Feel free to STAR and fork and extend it!
