@@ -7,6 +7,11 @@ from app.crud import create_student, get_student_progress, update_student_progre
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+#added - health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     total = await count_students()
